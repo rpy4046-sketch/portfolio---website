@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio - Web Developer</title>
+  <meta name="description" content="Portfolio of a web developer showcasing projects, skills, and a live weather app.">
+  <meta name="keywords" content="web developer, portfolio, HTML, CSS, JavaScript, weather app, projects">
+  <meta name="author" content="Your Name">
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body { margin:0; font-family: Arial, sans-serif; line-height:1.6; }
+    a { text-decoration:none; color:inherit; }
+
+    header {
+      position: fixed; top:0; width:100%; z-index:1000;
+      background-color:#4CAF50; color:white; padding:15px 0;
+    }
+    header nav { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+    header nav a { font-weight:bold; color:white; }
+    header nav a:hover { text-decoration:underline; }
+
+    section { padding:80px 20px 40px; min-height:100vh; text-align:center; }
+    h1,h2 { color:#333; text-align:center; }
+
+    #home { background-color:#e0f2f1; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+    #about { background-color:#e8f5e9; }
+    #skills { background-color:#a5d6a7; display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px; }
+    .skill { background:white; padding:10px 20px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+
+    #portfolio { background-color:#c8e6c9; }
+    .projects { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px; }
+    .project-card {
+      background:white; padding:20px; border-radius:10px; width:300px;
+      box-shadow:0 4px 6px rgba(0,0,0,0.1); transition:transform 0.2s;
+    }
+    .project-card:hover { transform:scale(1.05); }
+
+    /* Weather App inside Portfolio */
+    .weather-app { margin-top:20px; }
+    .weather-app input { padding:10px; width:150px; border-radius:5px; border:none; margin-right:5px; }
+    .weather-app button { padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; }
+    .weather-card { margin-top:20px; background: rgba(0,0,0,0.2); padding:15px; border-radius:10px; color:#fff; }
+    .weather-card img { width:60px; }
+    .toggle-temp { margin-top:5px; cursor:pointer; text-decoration:underline; font-size:14px; }
+
+    footer { background:#333; color:white; text-align:center; padding:15px 0; }
+
+    @media(max-width:600px) {
+      .projects { flex-direction:column; align-items:center; }
+      header nav { flex-direction:column; gap:10px; }
+      .weather-app input { width:120px; margin-bottom:5px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#portfolio">Portfolio</a>
+  </nav>
+</header>
+
+<section id="home">
+  <h1>Welcome to My Portfolio</h1>
+  <p>Hi! I am a web developer showcasing my skills and projects.</p>
+</section>
+
+<section id="about">
+  <h2>About Me</h2>
+  <p>I am passionate about web development and creating interactive, responsive websites. I am constantly learning and improving my skills.</p>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <div class="skill">HTML</div>
+  <div class="skill">CSS</div>
+  <div class="skill">JavaScript</div>
+  <div class="skill">Responsive Design</div>
+  <div class="skill">Git/GitHub</div>
+</section>
+
+<section id="portfolio">
+  <h2>Portfolio Projects</h2>
+  <div class="projects">
+    <div class="project-card">
+      <h3>Project 1</h3>
+      <p>Basic HTML/CSS project demonstrating layout skills.</p>
+    </div>
+    <div class="project-card">
+      <h3>Project 2</h3>
+      <p>Interactive JS project with dynamic content.</p>
+    </div>
+    <div class="project-card">
+      <h3>Project 3</h3>
+      <p>Responsive website for mobile and PC users.</p>
+    </div>
+  </div>
+
+  <!-- Weather App -->
+  <div class="weather-app">
+    <h3>Live Weather App</h3>
+    <input type="text" id="city" placeholder="Enter city name">
+    <button onclick="getWeather()">Get Weather</button>
+    <div class="weather-card" id="weather-card">
+      <p>Weather info will appear here.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 My Portfolio</p>
+</footer>
+
+<script>
+  // Weather App JS
+  let isCelsius = true;
+  let currentTempC = 0;
+
+  function changeBackground(weather) {
+    switch(weather.toLowerCase()) {
+      case 'clear': document.body.style.background = 'linear-gradient(to right, #fceabb, #f8b500)'; break;
+      case 'clouds': document.body.style.background = 'linear-gradient(to right, #bdc3c7, #2c3e50)'; break;
+      case 'rain': document.body.style.background = 'linear-gradient(to right, #00c6fb, #005bea)'; break;
+      case 'snow': document.body.style.background = 'linear-gradient(to right, #83a4d4, #b6fbff)'; break;
+      case 'thunderstorm': document.body.style.background = 'linear-gradient(to right, #373b44, #4286f4)'; break;
+      default: document.body.style.background = 'linear-gradient(to right, #4facfe, #00f2fe)'; break;
+    }
+  }
+
+  function toggleTemp() {
+    const tempEl = document.getElementById('temp');
+    if(!tempEl) return;
+    if(isCelsius){
+      tempEl.textContent = `${(currentTempC*9/5 +32).toFixed(1)} °F`;
+      isCelsius = false;
+    } else {
+      tempEl.textContent = `${currentTempC.toFixed(1)} °C`;
+      isCelsius = true;
+    }
+  }
+
+  async function getWeather() {
+    const city = document.getElementById('city').value;
+    const apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+    if(!city){ alert('Please enter a city name.'); return; }
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      if(!response.ok) throw new Error('City not found');
+      const data = await response.json();
+
+      currentTempC = data.main.temp;
+      changeBackground(data.weather[0].main);
+
+      document.getElementById('weather-card').innerHTML = `
+        <h4>${data.name}, ${data.sys.country}</h4>
+        <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Weather Icon">
+        <p id="temp">${currentTempC.toFixed(1)} °C</p>
+        <p>${data.weather[0].main} - ${data.weather[0].description}</p>
+        <p>Humidity: ${data.main.humidity}%</p>
+        <p>Wind Speed: ${data.wind.speed} m/s</p>
+        <p class="toggle-temp" onclick="toggleTemp()">Toggle °C / °F</p>
+      `;
+    } catch(error) {
+      alert(error.message);
+    }
+  }
+</script>
+
+</body>
+</html>
